@@ -1,157 +1,161 @@
-# HackerRank Orchestrate - October 2026
+# EraseVerify-AI 🔐
+### AI-Powered Data Deletion Verification System
 
-## Ghost Data Still Exists
+## 📌 Overview
 
-Build an AI agent that audits whether a user's personal data was actually deleted.
+**EraseVerify-AI** is an AI-powered data deletion verification system designed to identify personal information that remains in an organization's systems after a user requests its deletion.
 
-A deletion workflow may report **Complete** while data still exists in databases, logs, support attachments, exports, search indexes, archives, or backups. Sync and restore processes may also bring deleted data back.
+Deleting data from one location does not always remove it from databases, application logs, exported files, backups, or connected services. EraseVerify-AI analyses available evidence to detect incomplete deletions, exposed personal information, active data flows, and backup restoration risks.
 
-For each request, the agent must first determine whether deletion was actually requested. It then returns `COMPLETE`, `INCOMPLETE`, or `NOT_APPLICABLE`, reports any remaining data or recreation risk, and produces the ordered remediation and verification steps required to finish an authorized deletion safely.
+Using evidence-based analysis and policy-driven rules, the system classifies deletion requests and generates actionable remediation and verification steps to support reliable, transparent, and verifiable data deletion.
 
-Read [`problem_statement.md`](./problem_statement.md) for the complete challenge contract.
+## 🎯 Problem Statement
 
----
+Organizations may struggle to verify whether personal data has been completely deleted across all systems. Residual records, active synchronization processes, and backup restoration mechanisms can cause deleted information to reappear or remain accessible.
 
-## Quick Start
+EraseVerify-AI addresses this challenge by analysing available evidence and identifying potential gaps in the data deletion process.
 
-Clone the repository and move into the project directory:
+## 💡 Key Features
 
-```bash
-git clone https://github.com/interviewstreet/hackerrank-orchestrate-october26.git
-cd hackerrank-orchestrate-october26
-```
+- **Identity Resolution:** Identifies relevant records associated with a deletion request.
+- **Multi-Format Evidence Analysis:** Extracts relevant information from supported databases, JSON files, logs, text documents, PDFs, and images.
+- **Deletion Status Classification:** Categorizes requests as `COMPLETE`, `INCOMPLETE`, or `NOT_APPLICABLE`.
+- **Privacy Risk Detection:** Identifies remaining personal information and potential data exposure.
+- **Data Flow Analysis:** Detects evidence of active synchronization or other processes that may recreate deleted data.
+- **Backup Restoration Risk Detection:** Identifies potential risks associated with restoring previously deleted information.
+- **Policy-Driven Remediation:** Generates ordered actions based on applicable deletion and retention rules.
+- **Evidence-Based Verification:** Uses available evidence to support deletion status decisions and verification steps.
+- **Structured Output:** Produces results in the required CSV format for evaluation and further analysis.
 
-Start your AI coding tool from the **repository root** so it automatically reads [`AGENTS.md`](./AGENTS.md) and logs your session turns to `log.txt` in the root directory.
+## ⚙️ How It Works
 
-Build your solution in `code/main.py`, or use another language and document its setup and run command clearly in your README.
+1. **Input Processing:** Reads deletion requests, policy rules, and available evidence files.
+2. **Identity Resolution:** Determines which records and identifiers are relevant to each request.
+3. **Evidence Extraction:** Collects relevant facts from supported file formats and system records.
+4. **Fact Aggregation:** Combines extracted evidence into a structured representation.
+5. **Policy Evaluation:** Evaluates deletion status according to applicable rules and evidence.
+6. **Remediation Planning:** Generates ordered steps for addressing unresolved deletion issues.
+7. **Output Generation:** Produces a structured CSV containing the deletion status and corresponding steps.
 
-Your solution must:
+## 🧰 Technology Stack
 
-- Read the input files from `dataset/`
-- Generate one prediction row for every request in `dataset/deletion_requests.csv`
-- Write the final predictions to `output.csv` in the repository root
+- **Programming Language:** Python
+- **Data Processing:** CSV, JSON, and structured text processing
+- **Document Analysis:** PDF and text extraction tools
+- **Image Analysis:** OCR-based text extraction where supported
+- **Decision Engine:** Rule-based policy evaluation
+- **Testing:** Automated tests and evaluation against available test cases
 
-Run the starter Python entry point with:
+*The exact dependencies and optional integrations depend on the project configuration.*
 
-```bash
-python3 code/main.py
-```
+## 📊 Deletion Statuses
 
-The blank template at `dataset/output.csv` is provided as a reference. Your final generated file for submission must be the root-level `output.csv`.
+| Status | Description |
+|---|---|
+| `COMPLETE` | Available evidence supports that the applicable deletion requirements have been satisfied. |
+| `INCOMPLETE` | Evidence indicates unresolved deletion requirements or risks. |
+| `NOT_APPLICABLE` | The deletion request does not apply under the defined rules. |
 
+## 📁 Project Structure
 
-## Dataset
-
-All participant-facing files are in `dataset/`:
-
-| File | Contents |
-| --- | --- |
-| `deletion_requests.csv` | 518 requests |
-| `sample_deletion_requests.csv` | 32 sample requests |
-| `sample_output.csv` | Correct sample answers |
-| `user_identities.csv` | Current user identities |
-| `user_audit_log.csv` | Historical identity changes |
-| `system_activity.csv` | Activity across services and data processes |
-| `deletion_rules.csv` | Required treatment for each data category |
-| `evidence_files.csv` | Manifest of supplied evidence files |
-| `output.csv` | Blank output template |
-
-Evidence is stored under `dataset/evidence/` and may include PDFs, images, logs, JSON, plain text, or SQL snapshot exports. SQL captures may contain a primary database, regional replicas, a reporting replica, or a failover replica so replication drift can be investigated directly. The `.sql` files are readable as text and executable with SQLite.
-
-Only `deletion_requests.csv` requires answers. The other files provide evidence and context.
-
----
-
-## Output
-
-Create `output.csv` with these columns in this exact order:
+The project is organized into modules for identity resolution, request classification, evidence extraction, policy evaluation, remediation planning, and output generation.
 
 ```text
-case_id,deletion_status,steps_json
+EraseVerify-AI/
+├── code/
+│   ├── evidence_extractors/
+│   ├── fact_aggregator.py
+│   ├── policy_engine.py
+│   ├── step_builder.py
+│   └── main.py
+├── tests/
+├── dataset/
+├── README.md
+└── log.txt
 ```
 
-Produce exactly one row per request. `deletion_status` is `COMPLETE`, `INCOMPLETE`, or `NOT_APPLICABLE`. `steps_json` is an ordered JSON array containing findings, remediation actions, and verification checks. Use an empty array (`[]`) for `NOT_APPLICABLE`. Evidence references may be a `file_id`, `activity_id`, or `audit_id`. Determine the resource state at `audit_at` from the available evidence; reported workflow statuses and operation results are claims. Use `dataset/sample_output.csv` as the format reference.
+*This is a representative structure. Update it to match the final contents of your repository.*
 
-The final file must contain 518 data rows sorted by `case_id` (plus the header row). The grader parses `steps_json` as JSON, so object-key order and whitespace do not matter; array order does. Order findings, remediation, and verification in that phase order. Within a phase, follow the operation order in the problem statement, then sort by `system_id` and `resource_id`.
+## 🚀 Getting Started
 
----
+### Prerequisites
 
-## Evaluation
+- Python 3.x
+- Git
+- A code editor such as Visual Studio Code
 
-`output.csv` will be compared with hidden canonical answers. Scoring considers:
+### Installation
 
-- deletion assessment accuracy;
-- current and historical identity resolution;
-- discovery of remaining data and recreation risks;
-- correct policy application and evidence references; and
-- completeness and ordering of remediation and verification steps.
-
-Your `code.zip` must include:
-
-```text
-code/evaluation/evaluation_report.md
-code/evaluation/usage_report.md
-```
-
-- `evaluation_report.md` must cover case, row, field, and sequence accuracy, at least three additional evaluation cases created by you, failures found, and improvements made.
-- `usage_report.md` must cover the final full-dataset run, including model providers and names, model calls, input and output tokens, total and average tokens per request, and estimated total and per-request cost. Include per-model and overall totals when using multiple models.
-
-**Important:** Place `evaluation_report.md` and `usage_report.md` inside `code/evaluation/` (matching `code/evaluation/main.py` in this starter layout), write your complete evaluation metrics, custom evaluation test cases, and token/cost breakdowns directly inside those Markdown files, and keep prompts in source code or Markdown files. Automated code evaluation ignores raw data files (`.csv`, `.tsv`, `.json`, `.jsonl`, `.sql`, `.log`), so content stored only in those formats will not be visible to the code judge or AI interviewer.
-
----
-
-## Chat Transcript
-
-This repository includes [`AGENTS.md`](./AGENTS.md), which instructs compatible AI coding tools to append conversation summaries to `log.txt` in the repository root:
-
-| Platform | Path |
-| --- | --- |
-| macOS / Linux | `<repo root>/log.txt` |
-| Windows | `<repo root>\log.txt` |
-
-- Always launch your AI coding agent from the repository root (or explicitly ask it to read `./AGENTS.md` first) so every turn is logged to `log.txt` with the required `User Prompt`, `Agent Response Summary`, `Actions`, and `Context` sections.
-- Upload `log.txt` directly as your `chat_transcript` submission on HackerRank.
-- Do not include API keys, tokens, credentials, or secrets in prompts, code, configuration, or `log.txt`.
-
----
-
-## Packaging `code.zip` and Submission
-
-| Item | Description |
-| --- | --- |
-| `code.zip` | Runnable solution, prompts, configuration, `README.md`, and `evaluation/` reports |
-| `output.csv` | One answer row for each of the 518 requests in `dataset/deletion_requests.csv` |
-| `chat_transcript` | The root `log.txt` file generated by your coding agent |
-| AI interview | Live explanation of your architecture, approach, and evaluation |
-
-You may use any programming language, model, framework, or retrieval approach. Include clear setup and execution instructions in `README.md` inside `code.zip`.
-
-To package `code.zip` from the repository root without bundling the dataset:
-
-**macOS / Linux:**
+Clone the repository:
 
 ```bash
-zip -r code.zip README.md code -x "*/__pycache__/*" "*/.venv/*" "*/venv/*" "*/node_modules/*" "*/.git/*" "*/.DS_Store"
+git clone <YOUR_REPOSITORY_URL>
 ```
 
-**Windows (PowerShell):**
+Navigate to the project directory:
 
-```powershell
-Compress-Archive -Path README.md, code -DestinationPath code.zip -Force
+```bash
+cd <YOUR_PROJECT_DIRECTORY>
 ```
 
-When packaging `code.zip`:
+Install the dependencies listed in the project's requirements file, if one is provided:
 
-- Keep your evaluation reports in `code/evaluation/` so they are bundled automatically with `code` (or add `evaluation` to the archive command above if you placed them in a top-level `evaluation/` directory).
-- Do **not** include `dataset/`, virtual environments (`.venv`, `venv`, `node_modules`), or build caches (`__pycache__`). On Windows, keep `.venv` at the repository root (outside `code/`) and remove any `code/__pycache__` folders before running `Compress-Archive`.
-- Do **not** include nested archives (`.zip`, `.tar`, `.gz`, `.tgz`, `.7z`, `.rar`) inside `code.zip` — submissions containing nested archive files will be rejected.
+```bash
+pip install -r requirements.txt
+```
 
-Before submitting, confirm that:
+### Running the Project
 
-- `output.csv` has the exact header `case_id,deletion_status,steps_json` and contains all 518 data rows sorted by `case_id`;
-- every `steps_json` value is a valid JSON array with consecutive step numbers starting at `1`;
-- findings cite valid evidence IDs, and `COMPLETE` verification steps cite evidence proving the current state;
-- proposed remediation and future verification steps use an empty `evidence_id` (`""`);
-- `code.zip` includes your runnable code, `README.md`, `code/evaluation/evaluation_report.md`, and `code/evaluation/usage_report.md`;
-- `log.txt` follows the `AGENTS.md` turn format and is uploaded to the `chat_transcript` slot; and
-- no API keys, credentials, real personal data, or sensitive configuration values are included.
+Run the entry-point script using the command specified by the project's configuration. For example:
+
+```bash
+python code/main.py
+```
+
+Ensure that the required input files and configuration are available before execution. Adjust the command if the project uses a different entry point or requires command-line arguments.
+
+## 🧪 Testing
+
+Run the project's automated tests using the configured test framework. If the project uses `pytest`, run:
+
+```bash
+python -m pytest
+```
+
+Use the provided evaluation scripts and test cases to validate classification accuracy, evidence handling, remediation ordering, and output formatting.
+
+## 🔒 Privacy and Responsible Data Handling
+
+EraseVerify-AI is designed to analyse evidence for deletion verification. It does not automatically guarantee that data has been physically erased from every system. Its conclusions depend on the evidence, policies, and inputs available to it.
+
+Sensitive data and evaluation datasets should be handled securely. Any production deployment should include appropriate access controls, audit logging, and safeguards against unauthorized disclosure.
+
+## 🌍 Potential Impact
+
+EraseVerify-AI aims to help organizations:
+
+- Improve confidence in personal data deletion.
+- Identify residual personal information and privacy risks.
+- Detect potential data recreation pathways.
+- Apply consistent, policy-driven remediation procedures.
+- Improve the transparency and auditability of deletion workflows.
+
+## 🔮 Future Enhancements
+
+- Integration with live databases and enterprise storage systems.
+- Support for additional document formats and evidence sources.
+- Improved OCR and intelligent evidence extraction.
+- Automated monitoring of data synchronization and backup restoration.
+- Interactive dashboards for deletion status and compliance reporting.
+
+## 🤝 Contributing
+
+Contributions, suggestions, and improvements are welcome. Please test changes thoroughly and ensure that new features preserve evidence integrity, policy compliance, and the required output format.
+
+## 📄 License
+
+Add a license file and specify the applicable license before distributing or reusing this project.
+
+---
+
+**EraseVerify-AI — Making data deletion more transparent, accountable, and verifiable.**
