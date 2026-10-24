@@ -1,0 +1,18 @@
+﻿# Ghost Data Still Exists - Dependencies
+# Install with: pip install -r requirements.txt
+
+# CSV / data
+pandas>=2.0.0
+
+# PDF text extraction (local, no API key)
+pdfplumber>=0.10.0
+
+# Image OCR - local fallback (requires Tesseract binary installed separately)
+Pillow>=10.0.0
+pytesseract>=0.3.10
+
+# Multimodal LLM (for request classification + image analysis)
+anthropic>=0.28.0
+
+# Load API keys from .env file safely
+python-dotenv>=1.0.0
