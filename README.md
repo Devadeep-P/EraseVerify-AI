@@ -74,7 +74,6 @@ EraseVerify-AI/
 └── log.txt
 ```
 
-*This is a representative structure. Update it to match the final contents of your repository.*
 
 ## 🚀 Getting Started
 
